@@ -20,6 +20,10 @@ router.delete("/:id", userController.deleteUser);
 router.put("/:id/bio", userController.updateBioUser);
 router.put("/:id/username", userController.updateUsernameUser);
 router.put("/:id/profilepicture", userController.updateProfilePicture);
+router.put("/:id/quote", userController.updateQuoteUser);
+
+router.patch("/:id/platforms", userController.updatePlatformsUser);
+router.patch("/:id/versions", userController.updateVersionsUser);
 
 router.put("/:id/password", userController.updatePasswordUser); //todo : add auth and bcrypt
 router.put("/:id/mail", userController.updateEmailUser); // todo with email verification sendGrid

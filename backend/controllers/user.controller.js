@@ -21,7 +21,7 @@ module.exports.userInfo = (req, res) => {
   }).select("-password");
 };
 
-// PUT - api/user/:id - update user bio
+// PUT - api/user/:id/bio - update user bio
 module.exports.updateBioUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
@@ -64,12 +64,10 @@ module.exports.updateEmailUser = async (req, res) => {
     await user.save();
 
     await sendVerificationEmail(user, req, res);
-    res
-      .status(200)
-      .json({
-        message:
-          "Email updated, we send you a verification mail to your old mail",
-      });
+    res.status(200).json({
+      message:
+        "Email updated, we send you a verification mail to your old mail",
+    });
   } catch (err) {
     return res.status(500).json({ message: err });
   }
@@ -116,6 +114,65 @@ module.exports.updateProfilePicture = async (req, res) => {
     ).then((docs) => res.status(200).json(docs));
   } catch (err) {
     return res.status(500).json({ message: err });
+  }
+};
+
+// PUT - api/user/:id/quote - update user quote
+module.exports.updateQuoteUser = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("ID unknown : " + req.params.id);
+
+  const { quote } = req.body;
+  try {
+    await UserModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          quote: quote,
+        },
+      },
+      { new: true, setDefaultOnInsert: true, runValidators: true }
+    ).then((docs) => res.status(200).json(docs));
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+};
+
+// PATCH - api/user/:id/platforms - update user platforms list
+module.exports.updatePlatformsUser = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("ID unknown : " + req.params.id);
+  try {
+    await UserModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $addToSet: {
+          platforms: req.body.platforms,
+        },
+      },
+      { new: true, upsert: true }
+    ).then((docs) => res.status(200).send(docs));
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+};
+
+// PATCH - api/user/:id/platforms - update user version list
+module.exports.updateVersionsUser = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("ID unknown : " + req.params.id);
+  try {
+    await UserModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $addToSet: {
+          versions: req.body.versions,
+        },
+      },
+      { new: true, upsert: true }
+    ).then((docs) => res.status(200).send(docs));
+  } catch (err) {
+    res.status(500).json({ message: err });
   }
 };
 
