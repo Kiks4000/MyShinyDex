@@ -26,22 +26,19 @@ module.exports.updateBioUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
+  const { bio } = req.body;
   try {
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          bio: req.body.bio,
+          bio: bio,
         },
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
-      }
-    );
+      { new: true, setDefaultOnInsert: true, runValidators: true }
+    ).then((docs) => res.status(200).json(docs));
   } catch (err) {
-    return res.status(500).send({ message: err });
+    return res.status(500).json({ message: err });
   }
 };
 
@@ -50,46 +47,53 @@ module.exports.updateEmailUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
+  const { email } = req.body;
+  const user = await UserModel.findById(req.params.id);
   try {
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          email: req.body.email,
+          email: email,
         },
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
-      }
+      { new: true, setDefaultOnInsert: true, runValidators: true }
     );
+
+    user.isVerified = false;
+    await user.save();
+
+    await sendVerificationEmail(user, req, res);
+    res
+      .status(200)
+      .json({
+        message:
+          "Email updated, we send you a verification mail to your old mail",
+      });
   } catch (err) {
-    return res.status(500).send({ message: err });
+    return res.status(500).json({ message: err });
   }
 };
 
-// PUT - api/user/:id/pseudo - update user pseudo
+// PUT - api/user/:id/username - update user username
 module.exports.updateUsernameUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
+  const { username } = req.body;
+
   try {
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          username: req.body.username,
+          username: username,
         },
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
-      }
-    );
+      { new: true, setDefaultOnInsert: true, runValidators: true }
+    ).then((docs) => res.status(200).json(docs));
   } catch (err) {
-    return res.status(500).send({ message: err });
+    return res.status(500).json({ message: err });
   }
 };
 
@@ -98,22 +102,20 @@ module.exports.updateProfilePicture = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
+  const { profilePicture } = req.body;
+
   try {
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          profilePicture: req.body.profilePicture,
+          profilePicture: profilePicture,
         },
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
-      }
-    );
+      { new: true, setDefaultOnInsert: true, runValidators: true }
+    ).then((docs) => res.status(200).json(docs));
   } catch (err) {
-    return res.status(500).send({ message: err });
+    return res.status(500).json({ message: err });
   }
 };
 
@@ -123,7 +125,7 @@ module.exports.deleteUser = async (req, res) => {
     return res.status(400).send("ID unknown : " + req.params.id);
 
   try {
-    await UserModel.remove({ _id: req.params.id }).exec();
+    await UserModel.deleteOne({ _id: req.params.id }).exec();
     res.status(200).json({ message: "Successfully deleted." });
   } catch (err) {
     return res.status(500).json({ message: err });
@@ -278,3 +280,27 @@ module.exports.updatePasswordUser = async (req, res) => {
     return res.status(500).json({ message: err });
   }
 };
+
+// Function to send verification email after a change of email
+async function sendVerificationEmail(user, req, res) {
+  try {
+    const token = user.generateVerificationToken();
+
+    await token.save();
+
+    let subject = "Email Verification for MyShinyDex";
+    let to = user.email;
+    console.log(to);
+    let from = process.env.FROM_EMAIL;
+    let link = `http://localhost:5000/api/user/verify/${token.token}`; // TODO change to production link
+    let html = `<p>Hi ${user.username}<p><br><p>Please click on the following <a href="${link}">link</a> to verify your account.</p> 
+    <br><p>If you did not request this, please ignore this email.</p>`;
+    await sendEmail({ to, from, subject, html });
+  } catch (error) {
+    console.log(error);
+    user.verificationToken = undefined;
+    user.verificationTokenExpires = undefined;
+    await user.save();
+    return res.status(500).json({ message: error.message });
+  }
+}

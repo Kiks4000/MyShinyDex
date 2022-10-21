@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const passController = require("../controllers/password.controller.js");
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
 
@@ -16,7 +17,7 @@ router.get("/:id", userController.userInfo);
 
 router.delete("/:id", userController.deleteUser);
 
-router.put("/:id", userController.updateBioUser);
+router.put("/:id/bio", userController.updateBioUser);
 router.put("/:id/username", userController.updateUsernameUser);
 router.put("/:id/profilepicture", userController.updateProfilePicture);
 
@@ -32,5 +33,14 @@ router.patch("/:id/shinytradelist", userController.updateShinyTradeList);
 router.patch("/:id/shinylist/remove", userController.removeShinyList);
 router.patch("/:id/shinywishlist/remove", userController.removeShinyWishList);
 router.patch("/:id/shinytradelist/remove", userController.removeShinyTradeList);
+
+// routes to recover password
+
+router.post("/passwordrecover", passController.passwordRecover);
+router.get(
+  "/passwordrecover/:token",
+  passController.verifyPasswordRecoverToken
+);
+router.post("/resetpassword/:token", passController.resetPassword);
 
 module.exports = router;
