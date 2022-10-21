@@ -1,0 +1,17 @@
+.mail-mainContainer {
+  height: 100vh;
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rem;
+  h1 {
+    font-size: 4rem;
+    font-family: $font-family;
+    text-align: center;
+    color: $blackPokeball;
+  }
+  img {
+    width: 70rem;
+  }
+}

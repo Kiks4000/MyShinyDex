@@ -24,6 +24,9 @@ module.exports.signUp = async (req, res) => {
     password,
     bio,
     profilePicture,
+    quote,
+    platforms,
+    versions,
   } = req.body;
 
   try {
@@ -40,6 +43,9 @@ module.exports.signUp = async (req, res) => {
       password,
       bio,
       profilePicture,
+      quote,
+      platforms,
+      versions,
     });
 
     await sendVerificationEmail(newUser, req, res);

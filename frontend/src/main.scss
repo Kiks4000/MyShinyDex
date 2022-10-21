@@ -1,0 +1,9 @@
+@import "./styles/_settings.scss";
+@import "./styles/_header.scss";
+
+@import "./styles/_mail.scss";
+
+body {
+  min-height: 100vh;
+  background-color: $whitePokeball;
+}

@@ -46,6 +46,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "DefaultProfile",
     },
+    quote: {
+      type: String,
+      default: "Shiny hunter!",
+    },
+    platforms: {
+      type: [String],
+      required: [true, "Please enter at least one platform"],
+    },
+    versions: {
+      type: [String],
+      required: [true, "Please enter at least one version"],
+    },
     shinyList: {
       type: [String],
     },
