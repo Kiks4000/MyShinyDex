@@ -1,5 +1,6 @@
-const User = require("../models/user");
+const User = require("../models/user.model");
 const { sendEmail } = require("../utils/sgmail.utils.js");
+require("dotenv").config();
 
 // POST - /api/user/passwordrecover  - ask password recover token via email
 module.exports.passwordRecover = async (req, res) => {
@@ -52,11 +53,16 @@ module.exports.verifyPasswordRecoverToken = async (req, res) => {
     });
 
     if (!user)
-      return res.status(401).json({
-        message: "Password reset token is invalid or has expired.",
-      });
+      return (
+        false +
+        res.status(401).json({
+          message: "Password reset token is invalid or has expired.",
+        })
+      );
 
-    res.status(200).json({ message: "Password reset token is valid." });
+    return (
+      true + res.status(200).json({ message: "Password reset token is valid." })
+    );
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/user.routes");
-require("dotenv").config();
+require("dotenv").config({ path: ".env" });
 require("./config/db");
 const { checkUser, requireAuth } = require("./middlewares/auth.middleware");
 const app = express();

@@ -1,7 +1,6 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
@@ -27,5 +26,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "uuid": "^9.0.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
