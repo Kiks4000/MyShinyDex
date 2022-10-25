@@ -1,0 +1,61 @@
+.login-mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15vh;
+  .login-formContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      .login-formGroup {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 3rem;
+        label {
+          font-size: 2rem;
+          font-family: $font-family;
+          color: $blackPokeball;
+          margin-bottom: 10px;
+        }
+        input {
+          padding: 10px;
+          font-size: 2.5rem;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          &:focus {
+            outline: 1px solid rgba(0, 0, 0, 0.2);
+          }
+        }
+        .login-btn {
+          padding: 10px;
+          font-size: 2rem;
+          font-family: $font-family;
+          border-radius: 5px;
+          border: 2px solid rgba(0, 0, 0, 0.2);
+          margin-bottom: 2rem;
+          transition: border 0.2s ease-in-out;
+          cursor: pointer;
+          &:hover {
+            border: 2px solid $bluePokemon;
+          }
+        }
+        .login-forgotpassword {
+          font-size: 1.5rem;
+          font-family: $font-family;
+          color: $blackPokeball;
+          text-decoration: none;
+          transition: color 0.2s ease-in-out;
+          cursor: pointer;
+          &:hover {
+            color: $redPokeball;
+          }
+        }
+      }
+    }
+  }
+}

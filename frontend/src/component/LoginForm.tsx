@@ -1,0 +1,68 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
+
+function LoginForm() {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    axios
+      .post("http://localhost:5000/api/user/login", {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  return (
+    <div className="login-formContainer">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <div className="login-formGroup">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            onChange={handleChangeEmail}
+            autoComplete="on"
+          />
+        </div>
+        <div className="login-formGroup">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            onChange={handleChangePassword}
+            autoComplete="on"
+          />
+        </div>
+        <div className="login-formGroup">
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+          <NavLink to="/ForgotPassword" className="login-forgotpassword">
+            Forgot password ?
+          </NavLink>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default LoginForm;

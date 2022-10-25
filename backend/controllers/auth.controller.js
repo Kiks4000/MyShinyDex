@@ -1,6 +1,7 @@
 const UserModel = require("../models/user.model");
 const Token = require("../models/token.model");
 const jwt = require("jsonwebtoken");
+require("cookie-parser");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const { signUpErrors, signInErrors } = require("../utils/errors.utils");
@@ -69,17 +70,24 @@ module.exports.signIn = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Email does not exist" });
     }
+    if (!user.isVerified) {
+      return res.status(400).json({
+        message:
+          "Your account has not been verified. Please check your email for verification",
+      });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Password is incorrect" });
     }
-
     const token = createToken(user._id);
-    res.cookie("jwt", token, {
+
+    res.cookie("MyShinyToken", token, {
       httpOnly: true,
       maxAge: maxAge,
     });
+
     res.status(200).json({ user: user._id });
   } catch (error) {
     const errors = signInErrors(error);
@@ -89,7 +97,7 @@ module.exports.signIn = async (req, res) => {
 
 // GET - api/user/logout - logout a user
 module.exports.logout = (req, res) => {
-  res.cookie("jwt", "", { maxAge: 1 });
+  res.cookie("MyShinyToken", "", { maxAge: 1 });
   res.redirect("/");
 };
 
@@ -106,18 +114,9 @@ module.exports.verifyEmail = async (req, res) => {
       return res.status(400).json({ message: "This Token doesn't exist" });
     }
 
-    await UserModel.findByIdAndUpdate(token.userId)
-      .then((user) => {
-        if (!user) {
-          return res.status(400).json({ message: "User not found" });
-        }
-
-        user.isVerified = true;
-        user.save();
-      })
-      .catch((err) => {
-        res.status(500).json({ message: err.message });
-      });
+    await UserModel.findByIdAndUpdate(token.userId, {
+      isVerified: true,
+    });
 
     await Token.findByIdAndRemove(token._id);
 

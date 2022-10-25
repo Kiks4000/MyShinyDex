@@ -42,31 +42,37 @@ module.exports.updateBioUser = async (req, res) => {
   }
 };
 
-// PUT - api/user/:id/mail - update user email ///// TODO with email verification sendGrid
+// PUT - api/user/:id/mail - update user email
 module.exports.updateEmailUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
   const { email } = req.body;
+
   const user = await UserModel.findById(req.params.id);
+
+  if (user.email === email) {
+    return res.status(400).json({ message: "Email already used" });
+  }
+
   try {
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
           email: email,
+          isVerified: false,
         },
       },
       { new: true, setDefaultOnInsert: true, runValidators: true }
     );
 
-    user.isVerified = false;
-    await user.save();
+    const userWithNewEmail = await UserModel.findById(req.params.id);
 
-    await sendVerificationEmail(user, req, res);
+    await sendVerificationEmail(userWithNewEmail, req, res);
+
     res.status(200).json({
-      message:
-        "Email updated, we send you a verification mail to your old mail",
+      message: "Email updated, we send you a verification mail",
     });
   } catch (err) {
     return res.status(500).json({ message: err });
@@ -347,7 +353,6 @@ async function sendVerificationEmail(user, req, res) {
 
     let subject = "Email Verification for MyShinyDex";
     let to = user.email;
-    console.log(to);
     let from = process.env.FROM_EMAIL;
     let link = `http://localhost:5000/api/user/verify/${token.token}`; // TODO change to production link
     let html = `<p>Hi ${user.username}<p><br><p>Please click on the following <a href="${link}">link</a> to verify your account.</p> 

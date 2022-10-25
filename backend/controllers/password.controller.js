@@ -1,30 +1,39 @@
 const User = require("../models/user.model");
 const { sendEmail } = require("../utils/sgmail.utils.js");
 require("dotenv").config();
+const crypto = require("crypto");
 
 // POST - /api/user/passwordrecover  - ask password recover token via email
 module.exports.passwordRecover = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
 
     if (!user)
       return res.status(401).json({
         message:
-          "The email address" +
+          "The email address " +
           req.body.email +
           " is not associated with any account. Double-check your email address and try again.",
       });
 
-    await user.generatePasswordReset();
+    await User.findOneAndUpdate(
+      { email },
+      {
+        resetPasswordToken: crypto.randomBytes(20).toString("hex"),
+        resetPasswordExpires: Date.now() + 3600000, // 1 hour
+      }
+    );
 
-    await user.save();
+    const token = await User.findOne({ email }).select("resetPasswordToken");
+
+    const tokenToSend = token.resetPasswordToken;
 
     let subject = "Password change requested";
     let to = user.email;
     let from = process.env.FROM_EMAIL;
-    let link = `${process.env.CLIENT_URL}/new-password/${user.resetPasswordToken}`;
+    let link = `${process.env.CLIENT_URL}/new-password/${tokenToSend}`;
     let html = `<p>Hi ${user.username}</p>
                 <p>We heard that you lost your MyShinyDex Account password. Sorry about that!</p>
                 <p>But don't worry! You can use the following link within the next hour to reset your password:</p>

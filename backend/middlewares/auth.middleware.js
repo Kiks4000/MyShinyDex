@@ -8,7 +8,7 @@ module.exports.checkUser = (req, res, next) => {
       if (err) {
         console.log(err.message);
         res.locals.user = null;
-        res.cookie("jwt", "", { maxAge: 1 });
+        res.cookie("MyShinyToken", "", { maxAge: 1 });
         next();
       } else {
         console.log(decodedToken);

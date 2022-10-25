@@ -25,7 +25,7 @@ function Header() {
         </div>
       </div>
       <div className="header__right">
-        <NavLink className="right-link" to="#">
+        <NavLink className="right-link" to="/Login">
           Login
         </NavLink>
         <NavLink className="right-link-register" to="#">
