@@ -1,7 +1,6 @@
 const UserModel = require("../models/user.model");
 const Token = require("../models/token.model");
 const jwt = require("jsonwebtoken");
-require("cookie-parser");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const { signUpErrors, signInErrors } = require("../utils/errors.utils");
@@ -70,12 +69,6 @@ module.exports.signIn = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Email does not exist" });
     }
-    if (!user.isVerified) {
-      return res.status(400).json({
-        message:
-          "Your account has not been verified. Please check your email for verification",
-      });
-    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -83,12 +76,9 @@ module.exports.signIn = async (req, res) => {
     }
     const token = createToken(user._id);
 
-    res.cookie("MyShinyToken", token, {
-      httpOnly: true,
-      maxAge: maxAge,
-    });
+    // res.cookie("MyShinyToken", token, { httpOnly: true, maxAge: maxAge });
 
-    res.status(200).json({ user: user._id });
+    res.status(200).json({ user: user._id, token, validate: user.isVerified });
   } catch (error) {
     const errors = signInErrors(error);
     res.status(200).json({ errors });

@@ -2,12 +2,13 @@ import React from "react";
 import Header from "../component/Header";
 import { Props } from "../App";
 
-function Landing({ checkLogin }: Props) {
+function Register({ checkLogin }: Props) {
   return (
     <>
       <Header checkLogin={checkLogin} />
-      <h1>Landing</h1>
+      <h1>Register</h1>
     </>
   );
 }
-export default Landing;
+
+export default Register;

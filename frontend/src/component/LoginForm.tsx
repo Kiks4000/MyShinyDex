@@ -1,6 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 function LoginForm() {
   const [email, setEmail] = React.useState("");
@@ -14,6 +15,10 @@ function LoginForm() {
     setPassword(event.target.value);
   };
 
+  const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+  const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     axios
@@ -22,7 +27,25 @@ function LoginForm() {
         password: password,
       })
       .then((res) => {
-        console.log(res);
+        const cookies = new Cookies();
+        const MyShinyToken = res.data.token;
+        const MyShinyUser = res.data.user;
+        const isVerif = res.data.validate;
+        cookies.set("MyShinyToken", MyShinyToken, {
+          httpOnly: false,
+          path: "/",
+          maxAge: maxAge,
+        });
+        cookies.set("MyShinyUser", MyShinyUser, {
+          httpOnly: false,
+          path: "/",
+          maxAge: maxAge,
+        });
+        if (isVerif === true) {
+          navigate("/Home");
+        } else {
+          navigate("/NotValidated");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +79,7 @@ function LoginForm() {
           <button type="submit" className="login-btn">
             Login
           </button>
-          <NavLink to="/ForgotPassword" className="login-forgotpassword">
+          <NavLink to="/ForgotPass" className="login-forgotpassword">
             Forgot password ?
           </NavLink>
         </div>

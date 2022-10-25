@@ -1,11 +1,12 @@
 import React from "react";
 import Header from "../component/Header";
 import LoginForm from "../component/LoginForm";
+import { Props } from "../App";
 
-function Login() {
+function Login({ checkLogin }: Props) {
   return (
     <>
-      <Header />
+      <Header checkLogin={checkLogin} />
       <main className="login-mainContainer">
         <LoginForm />
       </main>

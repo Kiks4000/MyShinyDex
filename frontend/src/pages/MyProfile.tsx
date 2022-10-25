@@ -1,10 +1,11 @@
 import React from "react";
 import Header from "../component/Header";
+import { User, Props } from "../App";
 
-function MyProfile() {
+function MyProfile({ checkLogin, user }: Props & { user: User | null }) {
   return (
     <>
-      <Header />
+      <Header checkLogin={checkLogin} />
       <h1>My Profile</h1>
     </>
   );

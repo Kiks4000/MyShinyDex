@@ -1,14 +1,12 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const { checkUser, requireAuth } = require("./middlewares/auth.middleware");
 const userRoutes = require("./routes/user.routes");
 require("dotenv").config({ path: ".env" });
 require("./config/db");
 
-const cors = require("cors");
-
 const app = express();
+
+const cors = require("cors");
 
 const corsOptions = {
   origin: "*",
@@ -21,15 +19,14 @@ const corsOptions = {
 
 app.use(cors({ corsOptions }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // jwt
-app.get("*", checkUser);
-app.get("/jwtid", requireAuth, (req, res) => {
-  res.status(200).send(res.locals.user._id);
-});
+// app.get("*", checkUser);
+// app.get("/jwtid", requireAuth, (req, res) => {
+//   res.status(200).send(res.locals.user._id);
+// });
 
 // user routes
 app.use("/api/user", userRoutes);
