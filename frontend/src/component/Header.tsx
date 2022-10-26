@@ -16,6 +16,7 @@ function Header({ checkLogin }: Props) {
     cookies.remove("MyShinyUser_username");
     cookies.remove("MyShinyUser_isVerified");
     cookies.remove("MyShinyUser_isAdmin");
+    cookies.remove("MyShinyUser_id");
     window.location.reload();
   };
 

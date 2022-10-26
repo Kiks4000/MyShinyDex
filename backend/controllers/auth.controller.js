@@ -76,7 +76,7 @@ module.exports.signIn = async (req, res) => {
     }
     const token = createToken(user._id);
 
-    // res.cookie("MyShinyToken", token, { httpOnly: true, maxAge: maxAge });
+    // res.cookie("MyShinyToken", token, { maxAge: maxAge });
 
     res.status(200).json({ user: user._id, token, validate: user.isVerified });
   } catch (error) {

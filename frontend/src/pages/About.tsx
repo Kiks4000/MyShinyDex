@@ -1,18 +1,18 @@
 import React from "react";
 import Header from "../component/Header";
-import { User, Props } from "../App";
 import Footer from "../component/Footer";
+import { Props } from "../App";
 
-function MyAccount({ checkLogin, user }: Props & { user: User | null }) {
+function About({ checkLogin }: Props) {
   return (
     <>
       <Header checkLogin={checkLogin} />
       <main>
-        <h1>My Account</h1>
+        <h1>Home</h1>
       </main>
       <Footer />
     </>
   );
 }
 
-export default MyAccount;
+export default About;

@@ -7,6 +7,8 @@ function LoginForm() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+  const [error, setError] = React.useState("");
+
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -48,7 +50,7 @@ function LoginForm() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setError(err.response.data.message);
       });
   };
 
@@ -64,7 +66,11 @@ function LoginForm() {
             onChange={handleChangeEmail}
             autoComplete="on"
           />
+          {error === "Email does not exist" ? (
+            <p className="error">{error}</p>
+          ) : null}
         </div>
+
         <div className="login-formGroup">
           <label htmlFor="password">Password</label>
           <input
@@ -74,6 +80,9 @@ function LoginForm() {
             onChange={handleChangePassword}
             autoComplete="on"
           />
+          {error === "Password is incorrect" ? (
+            <p className="error">{error}</p>
+          ) : null}
         </div>
         <div className="login-formGroup">
           <button type="submit" className="login-btn">

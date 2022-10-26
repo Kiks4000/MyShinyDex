@@ -2,14 +2,18 @@ import React from "react";
 import Header from "../component/Header";
 import { Props } from "../App";
 import { useNavigate } from "react-router-dom";
+import Footer from "../component/Footer";
+import ForgotForm from "../component/ForgotForm";
 
 function ForgotPass({ checkLogin }: Props) {
   const navigate = useNavigate();
   return (
     <>
       <Header checkLogin={checkLogin} />
-      <h1>Forgot Password</h1>
-      <button onClick={() => navigate(-1)}>Back</button>
+      <main className="recover-mainContainer">
+        <ForgotForm />
+      </main>
+      <Footer />
     </>
   );
 }

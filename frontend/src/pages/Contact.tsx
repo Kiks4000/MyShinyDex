@@ -1,10 +1,10 @@
 import React from "react";
 import Header from "../component/Header";
 import WIP from "../img/WIP.png";
-import { User, Props } from "../App";
+import { Props } from "../App";
 import Footer from "../component/Footer";
 
-function Mail({ checkLogin, user }: Props & { user: User | null }) {
+function Contact({ checkLogin }: Props) {
   return (
     <>
       <Header checkLogin={checkLogin} />
@@ -17,4 +17,4 @@ function Mail({ checkLogin, user }: Props & { user: User | null }) {
   );
 }
 
-export default Mail;
+export default Contact;

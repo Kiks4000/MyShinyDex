@@ -13,6 +13,9 @@ import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import ForgotPass from "./pages/ForgotPass";
 import NoValidate from "./pages/NoValidate";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Verify from "./pages/Verify";
 
 export interface User {
   _id: string;
@@ -59,6 +62,7 @@ function App() {
         .get("http://localhost:5000/api/user/" + user)
         .then((res) => {
           setUser(res.data);
+          console.log(res.data);
           const cookies = new Cookies();
           const user_username = res.data.username;
           const user_isVerified = res.data.isVerified;
@@ -141,6 +145,12 @@ function App() {
         <Route
           path="/ForgotPass"
           element={<ForgotPass checkLogin={checkLogin} />}
+        />
+        <Route path="/About" element={<About checkLogin={checkLogin} />} />
+        <Route path="/Contact" element={<Contact checkLogin={checkLogin} />} />
+        <Route
+          path="/Verify/:token"
+          element={<Verify checkLogin={checkLogin} />}
         />
         {checkLogin() && checkUserValidate() && !checkUserVerified() && (
           <Route

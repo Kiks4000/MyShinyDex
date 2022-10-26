@@ -1,18 +1,24 @@
-.login-mainContainer {
+.recover-mainContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 15vh;
-  .login-formContainer {
+  .recover-title {
+    font-size: 3rem;
+    font-family: $font-family;
+    color: $blackPokeball;
+    margin-bottom: 2rem;
+  }
+  .recover-formContainer {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4rem 8rem;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
-    .login-form {
+    .recover-form {
       display: flex;
       flex-direction: column;
-      .login-formGroup {
+      .recover-formGroup {
         display: flex;
         flex-direction: column;
         margin-bottom: 3rem;
@@ -38,31 +44,28 @@
           color: $redPokeball;
           font-family: $font-family;
           font-size: 1.5rem;
-          margin-top: 5px;
+          margin-top: 1rem;
+          width: 40rem;
+          text-align: center;
         }
-        .login-btn {
-          padding: 10px;
-          font-size: 2rem;
+        .succes {
+          color: $bluePokemon;
           font-family: $font-family;
-          border-radius: 5px;
-          border: 2px solid rgba(0, 0, 0, 0.2);
-          margin-bottom: 2rem;
-          transition: border 0.2s ease-in-out;
-          cursor: pointer;
-          &:hover {
-            border: 2px solid $bluePokemon;
-          }
-        }
-        .login-forgotpassword {
           font-size: 1.5rem;
-          font-family: $font-family;
-          color: $blackPokeball;
-          text-decoration: none;
-          transition: color 0.2s ease-in-out;
-          cursor: pointer;
-          &:hover {
-            color: $redPokeball;
-          }
+          margin-top: 1rem;
+        }
+      }
+      .recover-btn {
+        padding: 10px;
+        font-size: 2rem;
+        font-family: $font-family;
+        border-radius: 5px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        margin-bottom: 2rem;
+        transition: border 0.2s ease-in-out;
+        cursor: pointer;
+        &:hover {
+          border: 2px solid $bluePokemon;
         }
       }
     }

@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../component/Header";
 import LoginForm from "../component/LoginForm";
 import { Props } from "../App";
+import Footer from "../component/Footer";
 
 function Login({ checkLogin }: Props) {
   return (
@@ -10,6 +11,7 @@ function Login({ checkLogin }: Props) {
       <main className="login-mainContainer">
         <LoginForm />
       </main>
+      <Footer />
     </>
   );
 }
