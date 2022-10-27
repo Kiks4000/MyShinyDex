@@ -1,14 +1,17 @@
 import React from "react";
 import "../styles/_header.scss";
 import Logo from "../img/logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 type Props = {
   checkLogin: () => boolean;
 };
 
 function Header({ checkLogin }: Props) {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     const cookies = new Cookies();
     cookies.remove("MyShinyToken");
@@ -17,13 +20,12 @@ function Header({ checkLogin }: Props) {
     cookies.remove("MyShinyUser_isVerified");
     cookies.remove("MyShinyUser_isAdmin");
     cookies.remove("MyShinyUser_id");
-    window.location.reload();
+    navigate("/");
   };
 
   const cookies = new Cookies();
-  const isAdmin = cookies.get("MyShinyUser_isAdmin");
   const isVerified = cookies.get("MyShinyUser_isVerified");
-
+  const isAdmin = cookies.get("MyShinyUser_isAdmin");
   return (
     <header className="header">
       <div className="header__left">

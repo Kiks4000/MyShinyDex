@@ -3,6 +3,12 @@
   flex-direction: column;
   align-items: center;
   margin-top: 15vh;
+  .login-title {
+    font-size: 3rem;
+    font-family: $font-family;
+    color: $blackPokeball;
+    margin-bottom: 2rem;
+  }
   .login-formContainer {
     display: flex;
     align-items: center;

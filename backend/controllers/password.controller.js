@@ -33,7 +33,7 @@ module.exports.passwordRecover = async (req, res) => {
     let subject = "Password change requested";
     let to = user.email;
     let from = process.env.FROM_EMAIL;
-    let link = `${process.env.CLIENT_URL}/new-password/${tokenToSend}`;
+    let link = `${process.env.CLIENT_URL}/Verify/${tokenToSend}`;
     let html = `<p>Hi ${user.username}</p>
                 <p>We heard that you lost your MyShinyDex Account password. Sorry about that!</p>
                 <p>But don't worry! You can use the following link within the next hour to reset your password:</p>
@@ -62,16 +62,11 @@ module.exports.verifyPasswordRecoverToken = async (req, res) => {
     });
 
     if (!user)
-      return (
-        false +
-        res.status(401).json({
-          message: "Password reset token is invalid or has expired.",
-        })
-      );
+      return res.status(401).json({
+        message: "Password reset token is invalid or has expired.",
+      });
 
-    return (
-      true + res.status(200).json({ message: "Password reset token is valid." })
-    );
+    res.status(200).json({ message: "Password reset token verified." });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

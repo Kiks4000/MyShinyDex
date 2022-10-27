@@ -1,24 +1,43 @@
-.recover-mainContainer {
+.verify-mainContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 15vh;
-  .recover-title {
+  .verify-titleContainer {
+    .verify-title {
+      font-size: 3rem;
+      font-family: $font-family;
+      color: $blackPokeball;
+      margin-bottom: 2rem;
+    }
+    .verify-back {
+      font-size: 1.5rem;
+      font-family: $font-family;
+      color: $blackPokeball;
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+      cursor: pointer;
+      &:hover {
+        color: $redPokeball;
+      }
+    }
+  }
+  .resetForm-title {
     font-size: 3rem;
     font-family: $font-family;
     color: $blackPokeball;
     margin-bottom: 2rem;
   }
-  .recover-formContainer {
+  .resetForm-container {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4rem 8rem;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
-    .recover-form {
+    .reset-form {
       display: flex;
       flex-direction: column;
-      .recover-formGroup {
+      .reset-formGroup {
         display: flex;
         flex-direction: column;
         margin-bottom: 3rem;
@@ -39,25 +58,24 @@
             outline: 1px solid rgba(0, 0, 0, 0.2);
           }
         }
-        .error {
-          margin-left: 0.5rem;
-          color: $redPokeball;
-          font-family: $font-family;
-          font-size: 1.5rem;
-          margin-top: 1rem;
-          width: 40rem;
-          text-align: center;
-        }
-        .succes {
-          color: $bluePokemon;
-          font-family: $font-family;
-          font-size: 1.5rem;
-          margin-top: 1rem;
-          width: 40rem;
-          text-align: center;
-        }
       }
-      .recover-btn {
+      .reset-error {
+        margin-left: 0.5rem;
+        color: $redPokeball;
+        font-family: $font-family;
+        font-size: 1.5rem;
+        margin-top: 5px;
+        margin-bottom: 3.05rem;
+      }
+      .reset-success {
+        margin-left: 0.5rem;
+        color: $bluePokemon;
+        font-family: $font-family;
+        font-size: 1.5rem;
+        margin-top: 5px;
+        margin-bottom: 3.05rem;
+      }
+      .reset-btn {
         padding: 10px;
         font-size: 2rem;
         font-family: $font-family;
@@ -68,17 +86,6 @@
         cursor: pointer;
         &:hover {
           border: 2px solid $bluePokemon;
-        }
-      }
-      .recover-back {
-        font-size: 1.5rem;
-        font-family: $font-family;
-        color: $blackPokeball;
-        text-decoration: none;
-        transition: color 0.2s ease-in-out;
-        cursor: pointer;
-        &:hover {
-          color: $redPokeball;
         }
       }
     }

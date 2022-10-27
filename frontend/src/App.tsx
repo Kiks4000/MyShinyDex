@@ -37,6 +37,10 @@ export interface User {
 
 export type Props = {
   checkLogin: () => boolean;
+  checkUserAdmin: () => boolean;
+  checkUserVerified: () => boolean;
+  checkUserValidate: () => boolean;
+  checkUser: () => void | null;
 };
 
 function App() {
@@ -62,7 +66,6 @@ function App() {
         .get("http://localhost:5000/api/user/" + user)
         .then((res) => {
           setUser(res.data);
-          console.log(res.data);
           const cookies = new Cookies();
           const user_username = res.data.username;
           const user_isVerified = res.data.isVerified;
@@ -126,55 +129,167 @@ function App() {
   };
 
   React.useEffect(() => {
-    checkUser();
     checkLogin();
+    checkUser();
     checkUserAdmin();
-    checkUserVerified();
     checkUserValidate();
+    checkUserVerified();
   }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="*" element={<Landing checkLogin={checkLogin} />} />
-        <Route path="/Login" element={<Login checkLogin={checkLogin} />} />
+        <Route
+          path="*"
+          element={
+            <Landing
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
+        />
+        <Route
+          path="/Login"
+          element={
+            <Login
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
+        />
         <Route
           path="/Register"
-          element={<Register checkLogin={checkLogin} />}
+          element={
+            <Register
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
         />
         <Route
           path="/ForgotPass"
-          element={<ForgotPass checkLogin={checkLogin} />}
+          element={
+            <ForgotPass
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
         />
-        <Route path="/About" element={<About checkLogin={checkLogin} />} />
-        <Route path="/Contact" element={<Contact checkLogin={checkLogin} />} />
+        <Route
+          path="/About"
+          element={
+            <About
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
+        />
+        <Route
+          path="/Contact"
+          element={
+            <Contact
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
+        />
         <Route
           path="/Verify/:token"
-          element={<Verify checkLogin={checkLogin} />}
+          element={
+            <Verify
+              checkLogin={checkLogin}
+              checkUserAdmin={checkUserAdmin}
+              checkUserValidate={checkUserValidate}
+              checkUserVerified={checkUserVerified}
+              checkUser={checkUser}
+            />
+          }
         />
         {checkLogin() && checkUserValidate() && !checkUserVerified() && (
           <Route
             path="/NotValidated"
-            element={<NoValidate checkLogin={checkLogin} />}
+            element={
+              <NoValidate
+                checkLogin={checkLogin}
+                checkUserAdmin={checkUserAdmin}
+                checkUserValidate={checkUserValidate}
+                checkUserVerified={checkUserVerified}
+                checkUser={checkUser}
+              />
+            }
           />
         )}
         {checkLogin() && checkUserValidate() && checkUserVerified() && (
           <>
             <Route
               path="/Home"
-              element={<Home checkLogin={checkLogin} user={user} />}
+              element={
+                <Home
+                  checkLogin={checkLogin}
+                  checkUserAdmin={checkUserAdmin}
+                  checkUserValidate={checkUserValidate}
+                  checkUserVerified={checkUserVerified}
+                  checkUser={checkUser}
+                  user={user}
+                />
+              }
             />
             <Route
               path="/MyProfile"
-              element={<MyProfile checkLogin={checkLogin} user={user} />}
+              element={
+                <MyProfile
+                  checkLogin={checkLogin}
+                  checkUserAdmin={checkUserAdmin}
+                  checkUserValidate={checkUserValidate}
+                  checkUserVerified={checkUserVerified}
+                  checkUser={checkUser}
+                  user={user}
+                />
+              }
             />
             <Route
               path="/MyAccount"
-              element={<MyAccount checkLogin={checkLogin} user={user} />}
+              element={
+                <MyAccount
+                  checkLogin={checkLogin}
+                  checkUserAdmin={checkUserAdmin}
+                  checkUserValidate={checkUserValidate}
+                  checkUserVerified={checkUserVerified}
+                  checkUser={checkUser}
+                  user={user}
+                />
+              }
             />
             <Route
               path="/Mail"
-              element={<Mail checkLogin={checkLogin} user={user} />}
+              element={
+                <Mail
+                  checkLogin={checkLogin}
+                  checkUserAdmin={checkUserAdmin}
+                  checkUserValidate={checkUserValidate}
+                  checkUserVerified={checkUserVerified}
+                  checkUser={checkUser}
+                  user={user}
+                />
+              }
             />
           </>
         )}
@@ -182,7 +297,18 @@ function App() {
           checkUserValidate() &&
           checkUserAdmin() &&
           checkUserVerified() && (
-            <Route path="/Admin" element={<Admin checkLogin={checkLogin} />} />
+            <Route
+              path="/Admin"
+              element={
+                <Admin
+                  checkLogin={checkLogin}
+                  checkUserAdmin={checkUserAdmin}
+                  checkUserValidate={checkUserValidate}
+                  checkUserVerified={checkUserVerified}
+                  checkUser={checkUser}
+                />
+              }
+            />
           )}
       </Routes>
     </BrowserRouter>

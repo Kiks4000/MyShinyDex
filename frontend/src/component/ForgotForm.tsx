@@ -1,10 +1,13 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ForgotForm() {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState("");
+
+  const navigate = useNavigate();
 
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -46,6 +49,9 @@ function ForgotForm() {
           <button className="recover-btn" type="submit">
             Send Password Recover
           </button>
+          <a onClick={() => navigate(-1)} className="recover-back">
+            Back to login
+          </a>
         </form>
       </div>
     </>
