@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "../component/Header";
-import { Props } from "../App";
 import Footer from "../component/Footer";
 import ForgotForm from "../component/ForgotForm";
+import { Props } from "../App";
 
 function ForgotPass({ checkLogin }: Props) {
   return (

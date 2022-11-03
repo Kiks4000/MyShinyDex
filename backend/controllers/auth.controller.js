@@ -67,18 +67,24 @@ module.exports.signIn = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "Email does not exist" });
+      return res.status(200).json({ message: "Email does not exist" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Password is incorrect" });
+      return res.status(200).json({ message: "Password is incorrect" });
     }
-    const token = createToken(user._id);
 
-    // res.cookie("MyShinyToken", token, { maxAge: maxAge });
+    if (isMatch) {
+      user.password = undefined;
+      const tokenJson = jwt.sign({ user }, process.env.SECRET_KEY, {
+        expiresIn: maxAge,
+      });
+      const token = createToken(user._id);
+      res.cookie("MyShinyToken", token, { sameSite: "strict", maxAge: maxAge });
+    }
 
-    res.status(200).json({ user: user._id, token, validate: user.isVerified });
+    res.status(200).json({ user: user._id, token });
   } catch (error) {
     const errors = signInErrors(error);
     res.status(200).json({ errors });

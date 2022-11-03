@@ -1,10 +1,10 @@
 import React from "react";
 import Header from "../component/Header";
 import WIP from "../img/WIP.png";
-import { User, Props } from "../App";
 import Footer from "../component/Footer";
+import { Props } from "../App";
 
-function Mail({ checkLogin, user }: Props & { user: User | null }) {
+function Mail({ checkLogin }: Props) {
   return (
     <>
       <Header checkLogin={checkLogin} />

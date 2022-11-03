@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../component/Header";
-import { Props } from "../App";
 import Footer from "../component/Footer";
+import { Props } from "../App";
 
 function NoValidate({ checkLogin }: Props) {
   return (

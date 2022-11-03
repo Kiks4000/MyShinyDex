@@ -1,16 +1,8 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Cookies from "universal-cookie";
-import { Props } from "../App";
 
-function LoginForm({
-  checkLogin,
-  checkUser,
-  checkUserAdmin,
-  checkUserValidate,
-  checkUserVerified,
-}: Props) {
+function LoginForm() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -24,11 +16,9 @@ function LoginForm({
     setPassword(event.target.value);
   };
 
-  const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
-
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     axios
       .post("http://localhost:5000/api/user/login", {
@@ -36,33 +26,11 @@ function LoginForm({
         password: password,
       })
       .then((res) => {
-        const cookies = new Cookies();
-        const MyShinyToken = res.data.token;
-        const MyShinyUser = res.data.user;
-        const isVerif = res.data.validate;
-        cookies.set("MyShinyToken", MyShinyToken, {
-          httpOnly: false,
-          path: "/",
-          maxAge: maxAge,
-        });
-        cookies.set("MyShinyUser", MyShinyUser, {
-          httpOnly: false,
-          path: "/",
-          maxAge: maxAge,
-        });
-        if (isVerif === true) {
-          checkLogin();
-          checkUser();
-          checkUserAdmin();
-          checkUserValidate();
-          checkUserVerified();
-          navigate("/Home");
-        } else {
-          navigate("/NotValidated");
-        }
+        setError(res.data.message);
+        navigate("/Home");
       })
       .catch((err) => {
-        setError(err.response.data.message);
+        console.log(err);
       });
   };
 

@@ -1,10 +1,10 @@
 import React from "react";
 import Header from "../component/Header";
-import { Props } from "../App";
 import Footer from "../component/Footer";
 import axios from "axios";
 import { NavLink, useParams } from "react-router-dom";
 import ResetPswd from "../component/ResetPswd";
+import { Props } from "../App";
 
 function Verify({ checkLogin }: Props) {
   const token = useParams<{ token: string }>().token;

@@ -1,23 +1,9 @@
 import React from "react";
 import Header from "../component/Header";
-import { User, Props } from "../App";
 import Footer from "../component/Footer";
+import { Props } from "../App";
 
-function Home({
-  checkLogin,
-  user,
-  checkUser,
-  checkUserAdmin,
-  checkUserValidate,
-  checkUserVerified,
-}: Props & { user: User | null }) {
-  React.useEffect(() => {
-    checkLogin();
-    checkUser();
-    checkUserAdmin();
-    checkUserValidate();
-    checkUserVerified();
-  }, []);
+function Home({ checkLogin }: Props) {
   return (
     <>
       <Header checkLogin={checkLogin} />

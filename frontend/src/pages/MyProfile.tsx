@@ -1,9 +1,9 @@
 import React from "react";
 import Header from "../component/Header";
-import { User, Props } from "../App";
 import Footer from "../component/Footer";
+import { Props } from "../App";
 
-function MyProfile({ checkLogin, user }: Props & { user: User | null }) {
+function MyProfile({ checkLogin }: Props) {
   return (
     <>
       <Header checkLogin={checkLogin} />
