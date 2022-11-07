@@ -8,7 +8,7 @@ function About({ checkLogin }: Props) {
     <>
       <Header checkLogin={checkLogin} />
       <main>
-        <h1>Home</h1>
+        <h1>About</h1>
       </main>
       <Footer />
     </>

@@ -31,7 +31,6 @@ module.exports.requireAuth = (req, res, next) => {
     jwt.verify(token, process.env.SECRET_KEY, async (err, decodedToken) => {
       if (err) {
         console.log(err.message);
-        res.redirect("/login");
       } else {
         console.log(decodedToken);
         next();
@@ -39,6 +38,5 @@ module.exports.requireAuth = (req, res, next) => {
     });
   } else {
     console.log("No token");
-    res.redirect("/login");
   }
 };

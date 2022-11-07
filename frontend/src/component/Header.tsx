@@ -7,6 +7,9 @@ import axios from "axios";
 import { Props } from "../App";
 
 function Header({ checkLogin }: Props) {
+  React.useEffect(() => {
+    checkLogin();
+  }, []);
   return (
     <header className="header">
       <div className="header__left">

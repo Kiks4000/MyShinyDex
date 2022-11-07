@@ -80,11 +80,12 @@ module.exports.signIn = async (req, res) => {
       const tokenJson = jwt.sign({ user }, process.env.SECRET_KEY, {
         expiresIn: maxAge,
       });
-      const token = createToken(user._id);
+      const token = createToken(user.id);
       res.cookie("MyShinyToken", token, { sameSite: "strict", maxAge: maxAge });
+      res.cookie("MyShinyID", user.id, { sameSite: "strict", maxAge: maxAge });
     }
 
-    res.status(200).json({ user: user._id, token });
+    res.status(200).json({ user: user.id, token });
   } catch (error) {
     const errors = signInErrors(error);
     res.status(200).json({ errors });
@@ -94,6 +95,7 @@ module.exports.signIn = async (req, res) => {
 // GET - api/user/logout - logout a user
 module.exports.logout = (req, res) => {
   res.cookie("MyShinyToken", "", { maxAge: 1 });
+  res.cookie("MyShinyID", "", { maxAge: 1 });
   res.redirect("/");
 };
 

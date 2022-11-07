@@ -1,8 +1,9 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Props } from "../App";
 
-function LoginForm() {
+function LoginForm({ checkLogin }: Props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -27,7 +28,6 @@ function LoginForm() {
       })
       .then((res) => {
         setError(res.data.message);
-        navigate("/Home");
       })
       .catch((err) => {
         console.log(err);

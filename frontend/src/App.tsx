@@ -36,38 +36,51 @@ export interface User {
 }
 
 export type Props = {
-  checkLogin: () => boolean;
+  checkLogin: () => void;
 };
 
 function App() {
   axios.defaults.withCredentials = true;
 
-  const maxAge = 7 * 24 * 60 * 60 * 1000;
-
-  const cookies = new Cookies();
-  const token = cookies.get("MyShinyToken");
-
+  const [user, setUser] = React.useState<User | null>(null);
   const [isLogged, setIsLogged] = React.useState(false);
 
   const checkLogin = () => {
+    const cookies = new Cookies();
+    const token = cookies.get("MyShinyToken");
     if (token) {
       setIsLogged(true);
     } else {
       setIsLogged(false);
     }
-    return isLogged;
+  };
+
+  const getUser = () => {
+    const cookies = new Cookies();
+    const id = cookies.get("MyShinyID");
+    if (id) {
+      axios
+        .get(`http://localhost:5000/api/user/${id}`)
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   React.useEffect(() => {
     checkLogin();
-    console.log("isLogged: " + isLogged);
+    getUser();
   }, []);
+
+  console.log(user);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="*" element={<Landing checkLogin={checkLogin} />} />
-        <Route path="/Login" element={<Login checkLogin={checkLogin} />} />
         <Route
           path="/Register"
           element={<Register checkLogin={checkLogin} />}
@@ -86,16 +99,26 @@ function App() {
           path="/NotValidated"
           element={<NoValidate checkLogin={checkLogin} />}
         />
-        <Route path="/Home" element={<Home checkLogin={checkLogin} />} />
-        <Route
-          path="/MyProfile"
-          element={<MyProfile checkLogin={checkLogin} />}
-        />
-        <Route
-          path="/MyAccount"
-          element={<MyAccount checkLogin={checkLogin} />}
-        />
-        <Route path="/Mail" element={<Mail checkLogin={checkLogin} />} />
+        {isLogged === false ? (
+          <Route path="/Login" element={<Login checkLogin={checkLogin} />} />
+        ) : null}
+
+        {isLogged ? (
+          <>
+            <Route path="/Home" element={<Home checkLogin={checkLogin} />} />
+            <Route
+              path="/MyProfile"
+              element={<MyProfile checkLogin={checkLogin} />}
+            />
+            <Route
+              path="/MyAccount"
+              element={<MyAccount checkLogin={checkLogin} />}
+            />
+            <Route path="/Mail" element={<Mail checkLogin={checkLogin} />} />
+          </>
+        ) : (
+          <Route path="*" element={<Landing checkLogin={checkLogin} />} />
+        )}
         <Route path="/Admin" element={<Admin checkLogin={checkLogin} />} />
       </Routes>
     </BrowserRouter>

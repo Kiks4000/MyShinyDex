@@ -9,7 +9,7 @@ function Login({ checkLogin }: Props) {
     <>
       <Header checkLogin={checkLogin} />
       <main className="login-mainContainer">
-        <LoginForm />
+        <LoginForm checkLogin={checkLogin} />
       </main>
       <Footer />
     </>
